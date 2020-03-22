@@ -25,17 +25,17 @@ jobs:
         sudo apt-get install build-essential libgtk-3-dev
     - name: Install dependencies
       run: |
-        python -m pip3 install --upgrade pip
-        pip3 install wheel
-        pip3 install -r requirements.txt
+        python -m pip install --upgrade pip
+        pip install wheel
+        pip install -r requirements.txt
     - name: Lint with flake8
       run: |
-        pip3 install flake8
+        pip install flake8
         # stop the build if there are Python syntax errors or undefined names
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        pip3 install pytest
+        pip install pytest
         pytest
