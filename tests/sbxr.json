@@ -1,0 +1,59 @@
+[
+  {
+    "Name": "sb1",
+    "Directory": "~/.local/share/sandboxer/boxes/sb1",
+    "Mountpoint": "/home/sb1",
+    "Status": "Stopped",
+    "Ip": null,
+    "Traits": [
+      "xdebug"
+    ],
+    "Branch": null
+  },
+  {
+    "Name": "sb2",
+    "Directory": "~/.local/share/sandboxer/boxes/sb2",
+    "Mountpoint": "/home/sb2",
+    "Status": "Running",
+    "Ip": null,
+    "Traits": [
+      "selenium",
+      "xdebug"
+    ],
+    "Branch": null
+  },
+  {
+    "Name": "sb99",
+    "Directory": "~/.local/share/sandboxer/boxes/sb99",
+    "Mountpoint": "/home/sb99",
+    "Status": "Running",
+    "Ip": null,
+    "Traits": [
+      "selenium",
+      "xdebug"
+    ],
+    "Branch": null
+  },
+  {
+    "Name": "sb77",
+    "Directory": "~/.local/share/sandboxer/boxes/sb77",
+    "Mountpoint": "/home/sb77",
+    "Status": "Stopped",
+    "Ip": null,
+    "Traits": [
+      "selenium",
+      "xdebug"
+    ],
+    "Branch": null
+  },
+  {
+    "Name": "sb5",
+    "Directory": "~/.local/share/sandboxer/boxes/sb5",
+    "Mountpoint": "/home/sb5",
+    "Status": "Stopped",
+    "Ip": null,
+    "Traits": [],
+    "Branch": null
+  }
+]
+
