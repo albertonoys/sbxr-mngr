@@ -2,15 +2,13 @@ import unittest
 from unittest.mock import Mock, patch, MagicMock
 import wx
 import sbxrmngr
-import sandbox
 import json
-
 from loader import Loader
 
 
 # Monkey patch loader to do it from file
 def GetJsonFromSandboxer(self):
-    with open('sbxr.json', 'r') as f:
+    with open('tests/sbxr.json', 'r') as f:
         Loader.SANDBOXES_DICT = json.load(f)
 
 

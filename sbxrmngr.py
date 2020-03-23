@@ -21,10 +21,10 @@ def CreateMenuItem(menu, label, function):
 
 
 class TaskBarIcon(wx.adv.TaskBarIcon):
-    TBMENU_STOPALL = wx.NewId()
-    TBMENU_CLOSE = wx.NewId()
-    TBMENU_SB1 = wx.NewId()
-    TBMENU_REFRESH = wx.NewId()
+    TBMENU_STOPALL = None
+    TBMENU_CLOSE = None
+    TBMENU_SB1 = None
+    TBMENU_REFRESH = None
 
     def __init__(self, frame):
         wx.adv.TaskBarIcon.__init__(self)
