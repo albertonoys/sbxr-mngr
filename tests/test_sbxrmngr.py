@@ -1,5 +1,8 @@
+import os
 import unittest
 from unittest.mock import Mock, patch, MagicMock
+
+import pytest
 import wx
 import sbxrmngr
 import json
@@ -15,6 +18,8 @@ def GetJsonFromSandboxer(self):
 Loader.GetJsonFromSandboxer = GetJsonFromSandboxer
 
 
+# Skip this test if there's no $DISPLAY until I figure out how to run it in headless mode
+@pytest.mark.skipif(os.getenv('DISPLAY', False) == False, reason="does not run without a DISPLAY")
 class TestSbxrMngr(unittest.TestCase):
     app = wx.App()
 
