@@ -19,11 +19,11 @@ Loader.GetJsonFromSandboxer = GetJsonFromSandboxer
 
 
 class TestSbxrMngr(unittest.TestCase):
-    app = wx.App()
 
     # Skip this test if there's no $DISPLAY until I figure out how to run it in headless mode
     @pytest.mark.skipif(os.getenv('DISPLAY', False) == False, reason="does not run without a DISPLAY")
     def test_create_menu_item(self):
+        app = wx.App()
         menu = wx.Menu()
         function = Mock()
         menuItem = sbxrmngr.CreateMenuItem(menu, 'test', function)
@@ -39,6 +39,7 @@ class TestSbxrMngr(unittest.TestCase):
     # Skip this test if there's no $DISPLAY until I figure out how to run it in headless mode
     @pytest.mark.skipif(os.getenv('DISPLAY', False) == False, reason="does not run without a DISPLAY")
     def test_create_popup_menu(self):
+        app = wx.App()
         separator = ''
         TaskBarIcon = Mock()
         popupmenu = sbxrmngr.TaskBarIcon.CreatePopupMenu(TaskBarIcon)
