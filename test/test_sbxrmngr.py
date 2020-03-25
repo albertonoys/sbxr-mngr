@@ -11,7 +11,7 @@ from loader import Loader
 
 # Monkey patch loader to do it from file
 def GetJsonFromSandboxer(self):
-    with open('tests/sbxr.json', 'r') as f:
+    with open('test/sbxr.json', 'r') as f:
         Loader.SANDBOXES_DICT = json.load(f)
 
 

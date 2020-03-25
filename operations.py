@@ -18,8 +18,6 @@ class Operations(Sandbox):
 
     def stop_sandbox(self, sbx):
         error = subprocess.getoutput('sbxr halt ' + sbx.name)
-        print(error)
 
     def start_sandbox(self, sbx):
         error = subprocess.getoutput('sbxr start ' + sbx.name)
-        print(error)
