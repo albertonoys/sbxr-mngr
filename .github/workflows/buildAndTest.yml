@@ -20,13 +20,13 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: 3.6
-    - name: Install gtk-3-dev and build-essential
+    - name: Install gtk-3-dev, build-essential and sox
       run: |
         sudo apt-get install build-essential libgtk-3-dev sox
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements-dev.txt
+        pip install -r dev-requirements.txt
         pip install -r requirements.txt
     - name: Test with pytest
       run: |

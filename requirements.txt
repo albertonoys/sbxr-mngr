@@ -1,2 +1,3 @@
+wheel==0.34.2
 wxPython==4.0.7.post2
 sh==1.12.14
