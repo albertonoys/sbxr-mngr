@@ -1,11 +1,12 @@
 import wx
 import wx.adv
+import os
 from loader import Loader
 from operations import Operations
 from sandbox import Sandbox
 
 APP_NAME = 'sbxr-mngr'
-TRAY_ICON_PATH = 'icons/hamburger.png'
+TRAY_ICON_PATH = os.path.join(os.path.dirname(__file__), 'icons/hamburger.png')
 SYMBOL_RELOAD = '\u21BB'
 TEXT_STOP_ALL = 'Stop all sandboxes'
 TEXT_EXIT = 'Exit '
