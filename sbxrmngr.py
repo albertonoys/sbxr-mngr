@@ -11,8 +11,8 @@ TRAY_ICON_PATH = os.path.join(os.path.dirname(__file__), 'icons/sandbox-manager-
 SYMBOL_RELOAD = '\u21BB'
 TEXT_STOP_ALL = 'Stop all sandboxes'
 TEXT_EXIT = 'Exit '
-TEXT_STOP = 'Stop '
-TEXT_START = 'Start '
+TEXT_STOP = '\u0078   Stop '
+TEXT_START = '\u25B6  Start '
 
 def CreateMenuItem(menu, label, function):
     menu_option = wx.MenuItem(menu, -1, label)
