@@ -3,3 +3,6 @@ __pycache__
 .pytest_cache
 .vscode
 conftest.py
+/bin
+/lib
+pyvenv.cfg
