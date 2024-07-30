@@ -5,4 +5,5 @@ __pycache__
 conftest.py
 /bin
 /lib
+/lib64
 pyvenv.cfg
