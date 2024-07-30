@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Outer cube -->
+  <path d="M10 10 L90 10 L90 90 L10 90 Z" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" />
+
+  <!-- Inner cube -->
+  <path d="M35 35 L65 35 L65 65 L35 65 Z" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" />
+
+  <!-- Diagonal connectors -->
+  <line x1="10" y1="10" x2="35" y2="35" stroke="#ffffff" stroke-width="4" stroke-linecap="round" />
+  <line x1="90" y1="10" x2="65" y2="35" stroke="#ffffff" stroke-width="4" stroke-linecap="round" />
+  <line x1="10" y1="90" x2="35" y2="65" stroke="#ffffff" stroke-width="4" stroke-linecap="round" />
+  <line x1="90" y1="90" x2="65" y2="65" stroke="#ffffff" stroke-width="4" stroke-linecap="round" />
+</svg>
