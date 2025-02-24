@@ -5,6 +5,7 @@ import threading
 from loader import Loader
 from operations import Operations
 from sandbox import Sandbox
+from typing import Dict
 
 APP_NAME = 'sbxr-mngr'
 TRAY_ICON_PATH = os.path.join(os.path.dirname(__file__), 'icons/sandbox-manager-icon.svg')
@@ -14,88 +15,90 @@ TEXT_EXIT = 'Exit '
 TEXT_STOP = '\u0078   Stop '
 TEXT_START = '\u25B6  Start '
 
-def CreateMenuItem(menu, label, function):
+def CreateMenuItem(menu: wx.Menu, label: str, function: callable) -> wx.MenuItem:
     menu_option = wx.MenuItem(menu, -1, label)
     menu.Bind(wx.EVT_MENU, function, id=menu_option.GetId())
     menu.Append(menu_option)
     return menu_option
 
 class TaskBarIcon(wx.adv.TaskBarIcon):
-    def __init__(self, frame):
-        wx.adv.TaskBarIcon.__init__(self)
+    def __init__(self, frame: wx.Frame):
+        super().__init__()
         # Frame of the menu
         self.taskbar_frame = frame
-        # Set icon
+        self.set_icon()
+        self.menu = wx.Menu()
+        self.sandbox_menu_items: Dict[str, wx.MenuItem] = {}
+        # Start a thread to load sandbox data
+        threading.Thread(target=self.load_sandbox_data, daemon=True).start()
+
+    def set_icon(self):
         icon = wx.Icon(wx.Bitmap(TRAY_ICON_PATH))
         self.SetIcon(icon, APP_NAME)
         # Bind left click to menu
-        self.Bind(wx.adv.EVT_TASKBAR_LEFT_DOWN, self.onTaskbarLeftClick)
+        self.Bind(wx.adv.EVT_TASKBAR_LEFT_DOWN, self.on_taskbar_left_click)
 
-        self.menu = wx.Menu()
-        self.sandbox_menu_items = {}
-
-        # Start a thread to load sandbox data
-        threading.Thread(target=self.loadSandboxData, daemon=True).start()
-
-    def loadSandboxData(self):
+    def load_sandbox_data(self):
         Loader()
-        wx.CallAfter(self.updateMenu)
+        wx.CallAfter(self.update_menu)
 
-    def refreshSandboxStatus(self):
-        Loader()  # Refresh sandbox statuses
-        self.updateMenu()
+    def refresh_sandbox_status(self):
+        Loader()
+        self.update_menu()
 
-    def updateMenu(self):
-        # Remove all existing menu items
+    def update_menu(self):
+        # Remove all items from the menu
         for item in self.menu.GetMenuItems():
             self.menu.Remove(item)
+
         self.sandbox_menu_items.clear()
 
         # Add updated sandbox items
         for sandbox in Sandbox.ListOfSandboxes:
-            menuLabel = TEXT_STOP + sandbox.name if sandbox.status else TEXT_START + sandbox.name
-            menuItem = CreateMenuItem(self.menu, menuLabel, self.OnMenu)
-            self.sandbox_menu_items[sandbox.name] = menuItem
-            Sandbox.setSandboxMenuItem(self, sandbox.name, self.menu.GetMenuItemCount() - 1, menuItem)
+            menu_label = TEXT_STOP + sandbox.name if sandbox.status else TEXT_START + sandbox.name
+            menu_item = CreateMenuItem(self.menu, menu_label, self.on_menu)
+            self.sandbox_menu_items[sandbox.name] = menu_item
+            Sandbox.setSandboxMenuItem(self, sandbox.name, self.menu.GetMenuItemCount() - 1, menu_item)
 
-        # Add separator and other items
-        self.menu.AppendSeparator()
-        self.stopAllMenuItem = CreateMenuItem(self.menu, TEXT_STOP_ALL, self.OnMenu)
-        self.menu.AppendSeparator()
-        self.exitMenuItem = CreateMenuItem(self.menu, TEXT_EXIT + APP_NAME, self.OnMenu)
+        self.add_separator_and_other_items()
 
-    def CreatePopupMenu(self):
-        self.refreshSandboxStatus()  # Refresh sandbox statuses before showing menu
+    def add_separator_and_other_items(self):
+        self.menu.AppendSeparator()
+        self.stop_all_menu_item = CreateMenuItem(self.menu, TEXT_STOP_ALL, self.on_menu)
+        self.menu.AppendSeparator()
+        self.exit_menu_item = CreateMenuItem(self.menu, TEXT_EXIT + APP_NAME, self.on_menu)
+
+    def CreatePopupMenu(self) -> wx.Menu:
+        self.refresh_sandbox_status()
         return self.menu
 
-    def OnMenu(self, event):
-        if event.GetId() == self.exitMenuItem.GetId():
+    def on_menu(self, event: wx.CommandEvent):
+        if event.GetId() == self.exit_menu_item.GetId():
             self.taskbar_frame.Close()
-        elif event.GetId() == self.stopAllMenuItem.GetId():
+        elif event.GetId() == self.stop_all_menu_item.GetId():
             Operations.stop_all_sandboxes(self)
-            self.refreshSandboxStatus()
+            self.refresh_sandbox_status()
         else:
             for sandbox in Sandbox.ListOfSandboxes:
                 if event.GetId() == self.sandbox_menu_items[sandbox.name].GetId():
                     Operations.toggle_sandbox(self, sandbox)
-                    self.refreshSandboxStatus()
+                    self.refresh_sandbox_status()
                     break
             else:
                 event.Skip()
 
-    def onTaskbarLeftClick(self, event):
+    def on_taskbar_left_click(self, event: wx.CommandEvent):
         self.PopupMenu(self.menu)
 
 class SbxrMngr(wx.Frame):
     def __init__(self):
-        wx.Frame.__init__(self, None, wx.ID_ANY, "", size=(300, 200))
+        super().__init__(None, wx.ID_ANY, "", size=(300, 200))
         panel = wx.Panel(self)
         panel.Show(False)
         self.myapp = TaskBarIcon(self)
-        self.Bind(wx.EVT_CLOSE, self.onClose)
+        self.Bind(wx.EVT_CLOSE, self.on_close)
 
-    def onClose(self, evt):
-        # Destroy the taskbar icon and the frame
+    def on_close(self, evt: wx.CloseEvent):
         self.myapp.RemoveIcon()
         self.myapp.Destroy()
         self.Destroy()
