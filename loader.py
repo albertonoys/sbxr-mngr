@@ -14,9 +14,15 @@ def is_tool(name):
     return which(name) is not None
 
 class Loader:
+    _instance = None
     SANDBOXES_DICT = []
 
-    def __init__(self):
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:
+            cls._instance = super(Loader, cls).__new__(cls, *args, **kwargs)
+        return cls._instance
+
+    def load_data(self):
         self.GetJsonFromSandboxer()
         self.ParseJsonToObjects()
 

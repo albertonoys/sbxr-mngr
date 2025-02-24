@@ -29,6 +29,7 @@ class TaskBarIcon(wx.adv.TaskBarIcon):
         self.set_icon()
         self.menu = wx.Menu()
         self.sandbox_menu_items: Dict[str, wx.MenuItem] = {}
+        self.loader = Loader()  # Instantiate Loader once
         # Start a thread to load sandbox data
         threading.Thread(target=self.load_sandbox_data, daemon=True).start()
 
@@ -39,28 +40,31 @@ class TaskBarIcon(wx.adv.TaskBarIcon):
         self.Bind(wx.adv.EVT_TASKBAR_LEFT_DOWN, self.on_taskbar_left_click)
 
     def load_sandbox_data(self):
-        Loader()
+        self.loader.load_data()
         wx.CallAfter(self.update_menu)
 
     def refresh_sandbox_status(self):
-        Loader()
+        self.loader.load_data()
         self.update_menu()
 
     def update_menu(self):
+        self.clear_menu()
+        self.add_sandbox_items()
+        self.add_separator_and_other_items()
+
+    def clear_menu(self):
         # Remove all items from the menu
         for item in self.menu.GetMenuItems():
             self.menu.Remove(item)
-
         self.sandbox_menu_items.clear()
 
+    def add_sandbox_items(self):
         # Add updated sandbox items
         for sandbox in Sandbox.ListOfSandboxes:
             menu_label = TEXT_STOP + sandbox.name if sandbox.status else TEXT_START + sandbox.name
             menu_item = CreateMenuItem(self.menu, menu_label, self.on_menu)
             self.sandbox_menu_items[sandbox.name] = menu_item
             Sandbox.setSandboxMenuItem(self, sandbox.name, self.menu.GetMenuItemCount() - 1, menu_item)
-
-        self.add_separator_and_other_items()
 
     def add_separator_and_other_items(self):
         self.menu.AppendSeparator()
