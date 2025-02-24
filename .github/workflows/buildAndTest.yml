@@ -34,7 +34,7 @@ jobs:
 
       - name: Install pre-built wxPython wheel
         run: |
-          pip install --no-index --find-links https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-22.04 wxPython==4.2.1
+          pip install --no-index --find-links https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-22.04 wxPython==4.2.2
 
       - name: Install other dependencies
         run: |
