@@ -2,7 +2,6 @@ import wx
 
 RUNNING = 'Running'
 
-
 class Sandbox(object):
     ListOfSandboxes = []
 

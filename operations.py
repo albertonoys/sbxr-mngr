@@ -1,7 +1,9 @@
 import subprocess
-import sh
+import logging
 from sandbox import Sandbox
 
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class Operations(Sandbox):
 
@@ -17,7 +19,16 @@ class Operations(Sandbox):
                 Operations.stop_sandbox(self, sandbox)
 
     def stop_sandbox(self, sbx):
-        error = subprocess.getoutput('sbxr halt ' + sbx.name)
+        command = 'sbxr halt ' + sbx.name
+        logging.info(f'Executing command: {command}')
+        error = subprocess.getoutput(command)
+        if error:
+            logging.error(f'Result of stop command: {error}')
+        else:
+            logging.info(f'Successfully stopped sandbox: {sbx.name}')
 
     def start_sandbox(self, sbx):
-        error = subprocess.getoutput('sbxr start ' + sbx.name)
+        command = 'sbxr start ' + sbx.name
+        logging.info(f'Executing command: {command}')
+        error = subprocess.getoutput(command)
+        logging.info(f'Result of start command: {error}')
